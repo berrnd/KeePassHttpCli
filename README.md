@@ -44,4 +44,6 @@ Get a single password as the output (StdOut), from an entry with a matching URL 
 
 Get a single password, from the first entry that matches the generic search `google` (like through the quick search box in KeePass)
 
+> Please note that you may need a patched version of KeePassHttp for this, if it's not already merged, see https://github.com/berrnd/keepasshttp/commit/5361f72d03dd44ddb0c49f700f15e416e6983685
+
 `KeePassHttpCli.exe -a "get-single-password" -f any -s "google"`
