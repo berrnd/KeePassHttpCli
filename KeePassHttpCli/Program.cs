@@ -27,7 +27,13 @@ namespace KeePassHttpCli
                     else
                         connection = new KeePassHttpConnection();
 
-                    connection.Connect();
+                    if (!connection.Connect() && !options.Associate && options.AnyActionRequested)
+                    {
+                        Console.ForegroundColor = ConsoleColor.Yellow;
+                        Console.WriteLine("No KeePass database associated and/or open, you have to do this first");
+                        CloseManually();
+                    }
+
                     if (options.Associate)
                     {
                         connection.Associate();

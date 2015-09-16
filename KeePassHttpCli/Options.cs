@@ -22,5 +22,13 @@ namespace KeePassHttpCli
         {
             return HelpText.AutoBuild(this);
         }
+
+        public bool AnyActionRequested
+        {
+            get
+            {
+                return this.Associate || this.GetSinglePassword;
+            }
+        }
     }
 }
