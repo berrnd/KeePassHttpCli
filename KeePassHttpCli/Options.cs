@@ -5,30 +5,25 @@ namespace KeePassHttpCli
 {
     internal class Options
     {
-        [Option('a', "associate", MutuallyExclusiveSet = "action", HelpText = "Associate to a KeePass database")]
-        public bool Associate { get; set; }
+        [Option('a', "action", HelpText = "Action, have to be one of the following strings (see explanation below): associate, get-single-password")]
+        public string Action { get; set; }
 
-        [Option('p', "get-single-password", MutuallyExclusiveSet = "action", HelpText = "Retrieve a single password in plain text (StdOut), if more than one entry is received, the password from the first one is taken")]
-        public bool GetSinglePassword { get; set; }
+        [Option('f', "search-field", HelpText = "Search field, have to be one the following strings: url")]
+        public string SearchField { get; set; }
 
-        [Option('u', "url", HelpText = "Search string")]
-        public string Url { get; set; }
+        [Option('s', "search-string", HelpText = "Search string")]
+        public string SearchString { get; set; }
 
-        [Option('s', "stay-open", HelpText = "Keeps the console window open")]
+        [Option('o', "stay-open", HelpText = "Keeps the console window open")]
         public bool StayOpen { get; set; }
 
         [HelpOption]
         public string GetUsage()
         {
-            return HelpText.AutoBuild(this);
-        }
-
-        public bool AnyActionRequested
-        {
-            get
-            {
-                return this.Associate || this.GetSinglePassword;
-            }
+            HelpText helpText = HelpText.AutoBuild(this);
+            helpText.AddPreOptionsLine("https://github.com/berrnd/KeePassHttpCli");
+            helpText.AddPostOptionsLine("Actions:\n\n\associate: Associate a new KeePass database, connection info is stored encrypted (can only be decrypted by the current logged in user) in %localappdata%\\KeePassHttpCli\n\nget-single-password: Get a single password in plain text (StdOut), if more than one entry is received, the first one is taken");
+            return helpText;
         }
     }
 }

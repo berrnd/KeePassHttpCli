@@ -27,22 +27,26 @@ namespace KeePassHttpCli
                     else
                         connection = new KeePassHttpConnection();
 
-                    if (!connection.Connect() && !options.Associate && options.AnyActionRequested)
+                    if (!connection.Connect() && !options.Action.Equals("associate") && !String.IsNullOrEmpty(options.Action))
                     {
                         Console.ForegroundColor = ConsoleColor.Yellow;
                         Console.WriteLine("No KeePass database associated and/or open, you have to do this first");
                         CloseManually();
                     }
 
-                    if (options.Associate)
+                    if (!String.IsNullOrEmpty(options.Action) && options.Action.Equals("associate"))
                     {
                         connection.Associate();
                         userSettings.ConnectionInfo = connection.GetConnectionInfo();
                         userSettings.Save(SETTINGS_FILE_NAME);
                     }
-                    else if (options.GetSinglePassword)
+                    else if (!String.IsNullOrEmpty(options.Action) && options.Action.Equals("get-single-password"))
                     {
-                        KeePassCredential[] credentials = connection.RetrieveCredentials(options.Url);
+                        KeePassCredential[] credentials = null;
+
+                        if (!String.IsNullOrEmpty(options.SearchField) && options.SearchField.Equals("url"))
+                            credentials = connection.RetrieveCredentials(options.SearchString);
+
                         if (credentials != null)
                             Console.Write(credentials[0].Password);
                         else
