@@ -8,7 +8,7 @@ namespace KeePassHttpCli
         [Option('a', "action", HelpText = "Action, have to be one of the following strings (see explanation below): associate, get-single-password")]
         public string Action { get; set; }
 
-        [Option('f', "search-field", HelpText = "Search field, have to be one the following strings: url")]
+        [Option('f', "search-field", HelpText = "Search field, have to be one the following strings: url, any")]
         public string SearchField { get; set; }
 
         [Option('s', "search-string", HelpText = "Search string")]

@@ -45,9 +45,11 @@ namespace KeePassHttpCli
                         KeePassCredential[] credentials = null;
 
                         if (!String.IsNullOrEmpty(options.SearchField) && options.SearchField.Equals("url"))
-                            credentials = connection.RetrieveCredentials(options.SearchString);
+                            credentials = connection.RetrieveCredentialsByUrl(options.SearchString);
+                        else if (!String.IsNullOrEmpty(options.SearchField) && options.SearchField.Equals("any"))
+                            credentials = connection.RetrieveCredentialsByCustomSearchString(options.SearchString);
 
-                        if (credentials != null)
+                        if (credentials != null && credentials.Length > 0)
                             Console.Write(credentials[0].Password);
                         else
                             ExitCode = 1;
