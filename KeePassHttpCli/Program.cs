@@ -40,7 +40,7 @@ namespace KeePassHttpCli
                         userSettings.ConnectionInfo = connection.GetConnectionInfo();
                         userSettings.Save(SETTINGS_FILE_NAME);
                     }
-                    else if (!String.IsNullOrEmpty(options.Action) && options.Action.Equals("get-single-password"))
+                    else if (!String.IsNullOrEmpty(options.Action) && (options.Action.Equals("get-single-password") || options.Action.Equals("get-single-field")))
                     {
                         KeePassCredential[] credentials = null;
 
@@ -50,7 +50,16 @@ namespace KeePassHttpCli
                             credentials = connection.RetrieveCredentialsByCustomSearchString(options.SearchString);
 
                         if (credentials != null && credentials.Length > 0)
-                            Console.Write(credentials[0].Password);
+                        {
+                            if (options.Action.Equals("get-single-password"))
+                                Console.Write(credentials[0].Password);
+                            else if (options.Action.Equals("get-single-field"))
+                            {
+                                KeePassHttpResponseStringField stringField = credentials[0].StringFields.Find(p => p.Key == options.ReturnField);
+                                if (stringField != null)
+                                    Console.Write(stringField.Value);
+                            }
+                        }
                         else
                             ExitCode = 1;
                     }
